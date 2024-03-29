@@ -22,7 +22,7 @@ void ofApp::update(){
 void ofApp::draw(){
 
     //ofNoFill();
-    halfMoon.draw(ofGetWindowRect(), ofGetElapsedTimef(), 400);
+    halfMoon.draw(ofGetWindowRect(), ofGetElapsedTimef());
 }
 
 //--------------------------------------------------------------

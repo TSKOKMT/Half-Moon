@@ -1,26 +1,36 @@
 #include "halfMoon.h"
 
 //--------------------------------------------------------------
-void halfMoon::draw(ofRectangle frame_, float time_, float side_) {
+halfMoon::halfMoon() {
+    
+    colors.resize(6);
+    colors[0].setHex(0xbec5c8);
+    colors[1].setHex(0x00ae67);
+    colors[2].setHex(0xf6a500);
+    colors[3].setHex(0x168cc3);
+    colors[4].setHex(0xf0616c);
+    colors[5].setHex(0x9a4292);
+}
+
+//--------------------------------------------------------------
+void halfMoon::draw(ofRectangle frame_, float time_) {
+    
+    float unit = sqrt(frame_.width * frame_.height) / 120.;
+    
+    float side_ = 15 * unit;
     
     ofPushMatrix();
     ofTranslate(frame_.getCenter());
     
-    for (int v = -10; v <= 10; v++) {
-        for (int h = -10; h <= 10; h++) {
+    int i = 0;
+    for (int v = -7; v <= 7; v++) {
+        for (int h = -7; h <= 7; h++) {
             float motion = ofWrap((time_ - h * .25) / 4., 0, 1);
             motion = ofxTskokmtMath::cubicBezierByX(ofPoint(.85, 0), ofPoint(.15, 1), motion);
             
-            ofColor color;
-            if (h % 2 == 0) {
-                if (ofWrap(v + 1 + h * 2, 0, 4) < 2) color.setHex(0x67d502);
-                else color.setHex(0xf343ce);
-            }
-            else {
-                if (ofWrap(v + 1 + h * 2, 0, 4) < 2) color.setHex(0xd9ea04);
-                else color.setHex(0x0086d9);
-            }
-            ofSetColor(color);
+            ofSetColor(colors[i % (int)colors.size()]);
+            
+            int res = 30;
             
             //ofDrawCircle(h * side_ * 2, v * side_ * 2, side_);
             ofPushMatrix();
@@ -31,16 +41,18 @@ void halfMoon::draw(ofRectangle frame_, float time_, float side_) {
             ofRotateRad((v % 2) * PI);
             ofRotateRad(-HALF_PI);
             ofBeginShape();
-            for (int i = 0; i <= 180; i++) {
-                float angle = ofMap(i, 0, 180, 0, PI);
+            for (int i = 0; i <= res; i++) {
+                float angle = ofMap(i, 0, res, 0, PI);
                 ofVertex(ofPoint(cos(angle), sin(angle)) * side_ / 2. * .99);
             }
-            for (int i = 180; i >= 0; i--) {
-                float angle = ofMap(i, 0, 180, 0, PI);
-                ofVertex(ofPoint(cos(angle), sin(angle)) * side_ / 2. * .1);
+            for (int i = res; i >= 0; i--) {
+                float angle = ofMap(i, 0, res, 0, PI);
+                ofVertex(ofPoint(cos(angle), sin(angle)) * side_ / 2. * .75);
             }
             ofEndShape(true);
             ofPopMatrix();
+            
+            i++;
         }
     }
     

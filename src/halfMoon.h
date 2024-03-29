@@ -7,6 +7,8 @@
 class halfMoon {
 
 public:
-    void draw(ofRectangle frame_, float time_, float side_);
+    halfMoon();
+    void draw(ofRectangle frame_, float time_);
         
+    vector<ofColor> colors;
 };
